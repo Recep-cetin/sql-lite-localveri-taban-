@@ -1,0 +1,26 @@
+package com.example.notdefteri;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class VT extends SQLiteOpenHelper {
+    private static String notdb;
+
+    public VT(Context context) {
+        super(context, notdb, null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL("create table  gunlukbilgileri(id int PRİMARY KEY,baslik varchar(70),icerik varchar(1000))");
+    }
+
+    public void onUpgrade(SQLiteDatabase db, int eski, int yeni) {
+        db.execSQL("drop table if exists gunlukbilgileri");
+        onCreate(db);
+    }
+
+}
+
