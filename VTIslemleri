@@ -1,0 +1,94 @@
+package com.example.notdefteri;
+
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class VTIslemleri {
+    VT gunlukDb;
+
+    public VTIslemleri(Context context) {
+        gunlukDb = new VT(context);//kendi veritabanı sınıfımızdan olusturdugumuz d
+    }
+
+    SQLiteDatabase db;
+
+    public void ac() {
+        db = gunlukDb.getWritableDatabase();
+        //burada veri tabanındakı yazılacak verileri yazacak hale getiriyiyoruz aktarım için yani gercekte veri cekiyoruz
+
+    }
+
+    public void kapatc() {
+        gunlukDb.close();
+        //burada veri tabanındakı yazılacak verileri yazacak hale getiriyiyoruz aktarım için yani gercekte veri cekiyoruz
+
+    }
+
+    //int id
+    public void gunlukeklle(String baslik, String icerik) {
+        ContentValues kayit = new ContentValues();
+        kayit.put("baslik", baslik);
+        kayit.put("icerik", icerik);
+        this.ac();
+        db.insert("gunlukbilgileri", null, kayit);
+
+    }
+
+    public String gunlukoku() {
+        this.ac();
+        String[] alanlar = new String[]{"baslik", "icerik"};
+        Cursor cr = db.query("gunlukbilgileri", alanlar, null, null, null, null, null);
+        String sonuc = "";
+
+        int baslikSutun = cr.getColumnIndex("baslik");
+        int icerikSutun = cr.getColumnIndex("icerik");
+
+        cr.moveToFirst();//ilk kayıta git
+        while (!cr.isAfterLast()) {
+            sonuc += cr.getString(baslikSutun) + " " + cr.getString(icerikSutun) + "/n";
+            cr.moveToFirst();//son kayıtakaar
+        }
+        cr.close();
+        return sonuc.toString();
+
+    }
+
+    public void gunluksil(int id) {
+        this.ac();
+        db.delete("gunlukbilgileri", "id" + id, null);
+        this.kapatc();
+    }
+
+    @SuppressLint("Range")
+    public ArrayList<HashMap<String, String>> gunluklistele() {
+        SQLiteDatabase db = gunlukDb.getWritableDatabase();
+        ArrayList<HashMap<String, String>> gnllistesi = new ArrayList<>();
+        String query = "SELECT baslik,icerik FROM gunlukbilgileri";
+        Cursor cr = db.rawQuery(query, null);
+        while (cr.moveToNext()) {
+            HashMap<String, String> gunluk = new HashMap<>();
+            //   gunluk.put("id", cr.getString(cr.getColumnIndex("id")));
+            gunluk.put("baslik", cr.getString(cr.getColumnIndex("baslik")));
+            gunluk.put("icerik", cr.getString(cr.getColumnIndex("icerik")));
+            gnllistesi.add(gunluk);
+        }
+        return gnllistesi;
+    }
+
+    public void gunlukguncele(int id, String baslik, String icerik) {
+        ContentValues kayit = new ContentValues();
+        kayit.put("id", id);
+        kayit.put("baslik", baslik);
+        kayit.put("icerik", icerik);
+        this.ac();
+        db.update("gunlukbilgileri", kayit, "id" + id, null);
+        this.kapatc();
+    }
+
+}
