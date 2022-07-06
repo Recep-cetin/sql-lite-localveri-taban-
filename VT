@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+//Bu sayfada burada veri tabanımızı oluşturuyoruz ve veri tabanı veri sutun bilgilerini yani oluşturulacak veri tablolarının şeklini belirliyoruz
 public class VT extends SQLiteOpenHelper {
     private static String notdb;
 
