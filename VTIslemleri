@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+//Bu sayfada oluşturdugumuz veri tabanı safasını bir nesneymiş gibi kulanarak (Metot) ekle/sil/guncele (crud) işlemlerimizi gercekleştiriyoruz
+
 public class VTIslemleri {
     VT gunlukDb;
 
